@@ -2,6 +2,7 @@ package route53
 
 import (
 	"strconv"
+	"fmt"
 
 	"github.com/libdns/route53"
 
@@ -28,16 +29,15 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 
 // Provision implements the Provisioner interface to initialize the AWS Client
 func (p *Provider) Provision(ctx caddy.Context) error {
-	logger := ctx.Logger(p)
-	logger.Info("Provisioning")
+	fmt.Println("Provisioning")
 	repl := caddy.NewReplacer()
 	p.Provider.AWSProfile = repl.ReplaceAll(p.Provider.AWSProfile, "")
 	p.Provider.AccessKeyId = repl.ReplaceAll(p.Provider.AccessKeyId, "")
 	p.Provider.SecretAccessKey = repl.ReplaceAll(p.Provider.SecretAccessKey, "")
 	p.Provider.Token = repl.ReplaceAll(p.Provider.Token, "")
 	p.Provider.Region = repl.ReplaceAll(p.Provider.Region, "")
-	logger.Info(p.Provider.AccessKeyId)
-	logger.Info(p.Provider.SecretAccessKey)
+	fmt.Println(p.Provider.AccessKeyId)
+	fmt.Println(p.Provider.SecretAccessKey)
 	return nil
 }
 
