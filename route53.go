@@ -28,14 +28,14 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 
 // Provision implements the Provisioner interface to initialize the AWS Client
 func (p *Provider) Provision(ctx caddy.Context) error {
-	logger := caddy.Log().Named("route53")
+	logger := ctx.Log()
+	logger.Info("Provision")
 	repl := caddy.NewReplacer()
 	p.Provider.AWSProfile = repl.ReplaceAll(p.Provider.AWSProfile, "")
 	p.Provider.AccessKeyId = repl.ReplaceAll(p.Provider.AccessKeyId, "")
 	p.Provider.SecretAccessKey = repl.ReplaceAll(p.Provider.SecretAccessKey, "")
 	p.Provider.Token = repl.ReplaceAll(p.Provider.Token, "")
 	p.Provider.Region = repl.ReplaceAll(p.Provider.Region, "")
-	logger.Info("Provision")
 	logger.Info(p.Provider.AccessKeyId)
 	logger.Info(p.Provider.SecretAccessKey)
 	return nil
@@ -53,7 +53,6 @@ func (p *Provider) Provision(ctx caddy.Context) error {
 // }
 //
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
-	logger := caddy.Log().Named("route53")
 	for d.Next() {
 		if d.NextArg() {
 			return d.ArgErr()
@@ -107,9 +106,6 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 			}
 		}
 	}
-	logger.Info("UnmarshalCaddyfile")
-	logger.Info(p.Provider.AccessKeyId)
-	logger.Info(p.Provider.SecretAccessKey)
 	return nil
 }
 
