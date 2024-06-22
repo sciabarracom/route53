@@ -28,7 +28,7 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 
 // Provision implements the Provisioner interface to initialize the AWS Client
 func (p *Provider) Provision(ctx caddy.Context) error {
-	logger := ctx.Slogger()
+	logger := ctx.Logger(p)
 	logger.Info("Provisioning")
 	repl := caddy.NewReplacer()
 	p.Provider.AWSProfile = repl.ReplaceAll(p.Provider.AWSProfile, "")
